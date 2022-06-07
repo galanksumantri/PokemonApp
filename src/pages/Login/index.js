@@ -28,7 +28,6 @@ export default function Login() {
     } catch(error) {
       console.error({error});
     }}
-
     // googleLogin = useContext(AuthContext)
 
   return (
