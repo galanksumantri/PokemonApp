@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RNAnimation</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">5dMko3VuYkJ0DDJQEcbZHmUAnAsaQb3IXXIpq</string>
 </resources>

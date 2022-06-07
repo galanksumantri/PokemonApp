@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "382122280197",
+    "project_id": "pokemongo-lite",
+    "storage_bucket": "pokemongo-lite.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:382122280197:android:baaaeb792513106e8de36c",
+        "android_client_info": {
+          "package_name": "com.rnanimation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "382122280197-rtlrif0pif2lfg4586vg29l1ejpj9e8i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rnanimation",
+            "certificate_hash": "94feaab6d42d158b7eef792ec8402998e2488039"
+          }
+        },
+        {
+          "client_id": "382122280197-r6vdscaicacm7jkoiekchqgcv8a5cg0s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfbkGSm0WP0HSR-kFPOnDdP0IKugGrW3M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "382122280197-r6vdscaicacm7jkoiekchqgcv8a5cg0s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

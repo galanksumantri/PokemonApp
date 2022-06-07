@@ -1,9 +1,22 @@
 import React from 'react';
-import Routing from './src/config/router';
+import {NavigationContainer} from '@react-navigation/native';
+import Routing from './src/router';
+import { navigationRef } from './src/router/RootNavigation';
+import codePush from "react-native-code-push";
+
+const CodePushOptions = {
+  checkFrequency: codePush.CheckFrequency.ON_APP_START,
+  mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
+  updateDialog: {
+    title: 'a new update is available!'
+  }
+}
 
 function App() {
   return (
-    <Routing />
+    <NavigationContainer ref={navigationRef}>
+      <Routing />
+    </NavigationContainer>
   );
 }
-export default App;
+export default codePush(CodePushOptions)(App);
