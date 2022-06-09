@@ -1,45 +1,49 @@
-import { StyleSheet, View, Text } from 'react-native';
-import React from 'react';
-import { AppHeader, Slider, Button } from '../../component'
+import { FlatList, View } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import Axios from 'axios';
+import { AppHeader, Slider, Card } from '../../component'
+import * as navigation from '../../router/RootNavigation';
 
-export default function Dashboard({navigation}) {
+export default function Dashboard() {
+  const [data, setdata] = useState(null);
+  const [offset, setoffset] = useState(0);
+  const limit = useState(20);
+
+  const next = () => {
+    if (offset <= 228) {
+      setoffset(offset + limit);
+      console.log('next');
+    } else {
+      setoffset(offset);
+    }
+  };
+  const previous = () => {
+    if (offset >= 20) {
+      setoffset(offset - limit);
+      console.log('back');
+    }
+  };
+
+  useEffect(() => {
+    Axios.get(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${offset}`)
+      .then(val => setdata(val.data.results))
+      .then(() => console.log(data))
+      .catch(e => console.log(e));
+  }, [offset]);
+
   return (
-    <View>
-      <AppHeader 
-        title="PokeDex" titleAlign="center"
-        leftText="Home" bgColor="white"
-        rightText="Go To PokeBag" onRightPress={() => navigation.navigate('Detail')}
+    <View style={{flex:1}}>
+       <AppHeader 
+         title="PokeDex" titleAlign="center"
+         leftText="Home" bgColor="white" onLeftPress={() => navigation.navigate('PokeBag')}
+         rightText="Go To PokeBag" onRightPress={() => navigation.navigate('Detail')}
+       />
+      <FlatList
+        data={data}
+        renderItem={({item}) => <Card title={item.name} />}
+        numColumns={2}
       />
-      <View style={styles.header}>
-        <Text style={styles.headerText}>TestComponent</Text>
-        <Button
-          bgColor="white"
-          width="0.3"
-          height="0.05" 
-          title="Testing"
-        />
-      </View>
-      <Slider 
-        bgRightColor="yellow"
-        bgLeftColor="yellow"
-      />
+      <Slider onLeftPress={previous} onRightPress={next} bgRightColor="yellow" bgLeftColor="yellow" />
     </View>
-  )
-}
-
-const styles = StyleSheet.create({
-  header: {
-    // width: '100%',
-    // height: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white'
-  },
-  headerText: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    color: '#333',
-    letterSpacing: 1,
-  },
-})
+  );
+};

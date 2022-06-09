@@ -4,14 +4,14 @@ import { Surface, Title } from 'react-native-paper'
 import {COLORS} from '../../themes'
 import Button from '../Button'
 
-function AppHeader({ style, title, leftText, leftButton, rightText, rightButton , onLeftPress, onRightPress, bgColor, titleAlign, width, height }) {
+function AppHeader({ style, title, leftText, leftButton, rightText, rightButton , onLeftPress, onRightPress, bgColor, titleAlign, width, height, disabled }) {
 
 	function LeftView() {
   return <View style={styles.view}>
 			{leftText && <TouchableOpacity onPress={onLeftPress}>
 				<Text style={{ color: bgColor, textAlign: titleAlign }}>{leftText}</Text>
 			</TouchableOpacity>}
-			{leftButton && <Button title={leftButton} bgColor={bgColor} onPress={onLeftPress} width={width} height={height} />}
+			{leftButton && <Button title={leftButton} bgColor={bgColor} onPress={onLeftPress} width={width} height={height} disabled={disabled} />}
 		</View>
 }
 
@@ -26,12 +26,12 @@ function AppHeader({ style, title, leftText, leftButton, rightText, rightButton 
 			{rightText && <TouchableOpacity onPress={onRightPress}>
 				<Text style={{ color: bgColor, textAlign: titleAlign }}>{rightText}</Text>
 			</TouchableOpacity>}
-			{rightButton && <Button title={rightButton} bgColor={bgColor} onPress={onRightPress} width={width} height={height} />}
+			{rightButton && <Button title={rightButton} bgColor={bgColor} onPress={onRightPress} width={width} height={height} disabled={disabled} />}
 		</View>
 }
 
 	return (
-		<Surface style={[styles.header, style, { backgroundColor: COLORS.primary }]}>
+		<Surface style={[styles.header, style, { backgroundColor: "orange" }]}>
 			<LeftView />
 			<TitleView />
 			<RightView />

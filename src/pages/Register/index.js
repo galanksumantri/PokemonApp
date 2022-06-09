@@ -3,7 +3,6 @@ import { TextInput, View, Text, Dimensions , StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 import { COLORS } from '../../themes';
 import Button from '../../component/Button'
 
@@ -39,7 +38,7 @@ export default function Register({navigation}) {
   return (
     <SafeAreaView
       style={styles.content}>
-      <Text style={styles.tittleText}>RN Animation</Text>
+      <Text style={styles.tittleText}>PokemonGo Lite</Text>
       <View style={styles.container}>
         <Formik
           initialValues={userInfo}
