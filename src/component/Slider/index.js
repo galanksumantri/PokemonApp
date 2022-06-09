@@ -4,12 +4,13 @@ import { Surface, Title } from 'react-native-paper'
 import {COLORS} from '../../themes'
 import Button from '../Button';
 
-function Slider({bgLeftColor, bgRightColor}) {
+function Slider({bgLeftColor, bgRightColor, onLeftPress, onRightPress}) {
 
 	function Previous() {
   return <View style={styles.view}>
 		<Button
 			bgColor={bgLeftColor}
+			onPress={onLeftPress}
 			width="0.3"
 			height="0.05" 
 			title="Sebelumnya"
@@ -25,6 +26,7 @@ function Slider({bgLeftColor, bgRightColor}) {
   return <View style={[styles.view, styles.rightView]}>
 		<Button
 			bgColor={bgRightColor}
+			onPress={onRightPress}
 			width="0.3"
 			height="0.05" 
 			title="Selanjutnya"

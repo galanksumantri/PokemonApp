@@ -1,12 +1,12 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { App, Login, Dashboard, Detail, Register } from '../pages';
+import { App, Login, Dashboard, Detail, Register, PokeBag, Splash } from '../pages';
 
 const Stack = createNativeStackNavigator();
 
 function Routing() {
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName="Splash">
       <Stack.Screen
         name="Login"
         component={Login}
@@ -32,6 +32,16 @@ function Routing() {
         component={App}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="PokeBag"
+        component={PokeBag}
+        options={{ headerShown: false }}
+      />      
+      <Stack.Screen
+        name="Splash"
+        component={Splash}
+        options={{ headerShown: false }}
+      /> 
     </Stack.Navigator>
   );
 }

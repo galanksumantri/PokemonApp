@@ -34,6 +34,7 @@
 
         "react/no-unstable-nested-components": ["off", {"allowAsProps": true}],
 
-        "no-return-await": "off"
+        "no-return-await": "off",
+        "react/no-array-index-key": "off"
     }
 }

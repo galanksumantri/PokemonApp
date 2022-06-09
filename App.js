@@ -1,8 +1,8 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
+import codePush from "react-native-code-push";
 import Routing from './src/router';
 import { navigationRef } from './src/router/RootNavigation';
-import codePush from "react-native-code-push";
 
 const CodePushOptions = {
   checkFrequency: codePush.CheckFrequency.ON_APP_START,

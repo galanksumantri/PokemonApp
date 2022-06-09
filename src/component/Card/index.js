@@ -1,19 +1,39 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, Text, StyleSheet, Pressable } from 'react-native';
+import { pokeBall } from '../../asset';
 
-function Card(bgColor,title) {
+export default function Card({title, onPress, onLongPress}) {
   return (
-    <View style={[styles.container, bgColor]}>{title}</View>
+    <Pressable 
+      onLongPress={onLongPress} 
+      onPress={onPress} style={({pressed})=>[
+        { opacity: pressed ? 0.5 : 2 },
+        styles.listPoke
+      ]}>
+      <Image
+        source={pokeBall}
+        style={styles.icon}
+      />
+      <Text>{title}</Text>
+    </Pressable>
   );
-}
-
-export default Card;
+};
 
 const styles = StyleSheet.create({
-  container: {
-    alignSelf: 'center',
-    marginTop: 16,
-    borderRadius: 4,
-    overflow: 'hidden',
+  listPoke: {
+    borderWidth: 1,
+    padding: 14,
+    marginBottom: 10,
+    marginRight: 8,
+    borderRadius: 8,
+    flex: 1 / 2,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-});
+  icon: {
+    width: 25,
+    height: 25,
+    marginRight: 10,
+  },
+})
