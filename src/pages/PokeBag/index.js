@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, View, Alert } from 'react-native';
+import { FlatList, Alert, View } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Axios from 'axios';
 import { AppHeader, Card } from '../../component'
@@ -34,7 +34,7 @@ export default function PokeBag() {
   const renderItem = ({item}) => <Card title={item.name} onLongPress={longPress} />;
 
   return (
-    <View style={styles.container}>
+    <View style={{flex: 1}}>
       <AppHeader 
         leftText="Back" bgColor="white" onLeftPress={() => navigation.navigate('Dashboard')}
         rightText="PokeBag" disabled
@@ -48,41 +48,3 @@ export default function PokeBag() {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  listPoke: {
-    borderWidth: 1,
-    padding: 14,
-    marginBottom: 10,
-    marginRight: 8,
-    borderRadius: 8,
-    flex: 1 / 2,
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  container: {
-    flex: 1,
-  },
-  pagination: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  button1: {
-    padding: 18,
-    backgroundColor: 'orange',
-    borderRadius: 8,
-  },
-  button2: {
-    padding: 18,
-    backgroundColor: 'lightblue',
-    borderRadius: 8,
-  },
-  icon: {
-    width: 25,
-    height: 25,
-    marginRight: 10,
-  },
-});
