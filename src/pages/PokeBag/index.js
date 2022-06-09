@@ -15,12 +15,10 @@ function longPress() {
     {
       cancelable: true,
       onDismiss: () =>
-        console.log(
-          'This alert was dismissed by tapping outside of the alert dialog.',
-        ),
+        console.log( 'This alert was dismissed by tapping outside of the alert dialog.'),
     },
-  );
-};
+  )
+}
 
 export default function PokeBag() {
   const [data, setdata] = useState(null);
@@ -31,8 +29,6 @@ export default function PokeBag() {
       .catch(e => console.log(e));
   }, []);
 
-  const renderItem = ({item}) => <Card title={item.name} onLongPress={longPress} />;
-
   return (
     <View style={{flex: 1}}>
       <AppHeader 
@@ -41,10 +37,10 @@ export default function PokeBag() {
       />
       <FlatList
         data={data}
-        renderItem={renderItem}
+        renderItem={({item}) => <Card title={item.name} onLongPress={longPress} />}
         numColumns={2}
         // keyExtractor={item => item.name}
       />
     </View>
-  );
-};
+  )
+}

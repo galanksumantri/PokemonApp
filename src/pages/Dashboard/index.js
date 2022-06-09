@@ -17,7 +17,7 @@ export default function Dashboard() {
       setoffset(offset);
     }
   };
-  const back = () => {
+  const previous = () => {
     if (offset >= 20) {
       setoffset(offset - limit);
       console.log('back');
@@ -25,15 +25,11 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    Axios.get(
-      `https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${offset}`,
-    )
+    Axios.get(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${offset}`)
       .then(val => setdata(val.data.results))
       .then(() => console.log(data))
       .catch(e => console.log(e));
   }, [offset]);
-
-  const renderItem = ({item}) => <Card title={item.name} />;
 
   return (
     <View style={{flex:1}}>
@@ -44,10 +40,10 @@ export default function Dashboard() {
        />
       <FlatList
         data={data}
-        renderItem={renderItem}
+        renderItem={({item}) => <Card title={item.name} />}
         numColumns={2}
       />
-      <Slider onLeftPress={back} onRightPress={next} bgRightColor="yellow" bgLeftColor="yellow" />
+      <Slider onLeftPress={previous} onRightPress={next} bgRightColor="yellow" bgLeftColor="yellow" />
     </View>
   );
 };
