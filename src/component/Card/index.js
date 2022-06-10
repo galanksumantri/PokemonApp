@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, Text, StyleSheet, Pressable } from 'react-native';
 import { pokeBall } from '../../asset';
 
-export default function Card({title, onPress, onLongPress}) {
+function Card({title, onPress, onLongPress}) {
   return (
     <Pressable 
       onLongPress={onLongPress} 
@@ -18,6 +18,8 @@ export default function Card({title, onPress, onLongPress}) {
     </Pressable>
   );
 };
+
+export default React.memo(Card)
 
 const styles = StyleSheet.create({
   listPoke: {

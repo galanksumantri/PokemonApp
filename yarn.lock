@@ -4499,13 +4499,6 @@
     "pretty-format" "^28.1.0"
     "semver" "^7.3.5"
 
-"jest-sonar-reporter@^2.0.0":
-  "integrity" "sha512-ZervDCgEX5gdUbdtWsjdipLN3bKJwpxbvhkYNXTAYvAckCihobSLr9OT/IuyNIRT1EZMDDwR6DroWtrq+IL64w=="
-  "resolved" "https://registry.npmjs.org/jest-sonar-reporter/-/jest-sonar-reporter-2.0.0.tgz"
-  "version" "2.0.0"
-  dependencies:
-    "xml" "^1.0.1"
-
 "jest-util@^27.5.1":
   "integrity" "sha512-Kv2o/8jNvX1MQ0KGtw480E/w4fBCDOnH6+6DmeKi6LZUIlKA5kwY0YNdlzaWTiVgxqAqik11QyxDOKk543aKXw=="
   "resolved" "https://registry.npmjs.org/jest-util/-/jest-util-27.5.1.tgz"
@@ -7569,11 +7562,6 @@
   dependencies:
     "simple-plist" "^1.1.0"
     "uuid" "^7.0.3"
-
-"xml@^1.0.1":
-  "integrity" "sha1-eLpyAgApxbyHuKgaPPzXS0ovweU="
-  "resolved" "https://registry.npmjs.org/xml/-/xml-1.0.1.tgz"
-  "version" "1.0.1"
 
 "xml2js@0.4.23":
   "integrity" "sha512-ySPiMjM0+pLDftHgXY4By0uswI3SPKLDw/i3UXbnO8M/p28zqexCUoPmQFrYD+/1BzhGJSs2i1ERWKJAtiLrug=="

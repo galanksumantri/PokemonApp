@@ -19,7 +19,7 @@ function Button({ onPress, disabled, title, bgColor, width, height, style, style
   );
 }
 
-export default Button;
+export default React.memo(Button);
 
 const styles = StyleSheet.create({
   container: {

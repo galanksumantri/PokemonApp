@@ -32,7 +32,7 @@
 
         "no-console": "off",
 
-        "react/no-unstable-nested-components": ["off", {"allowAsProps": true}],
+        // "react/no-unstable-nested-components": ["off", {"allowAsProps": true}],
 
         "no-return-await": "off",
         "react/no-array-index-key": "off"
