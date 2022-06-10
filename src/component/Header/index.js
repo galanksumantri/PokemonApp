@@ -1,21 +1,21 @@
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
-import React, {useCallback} from 'react'
+import React from 'react'
 import { Surface, Title } from 'react-native-paper'
 import {COLORS} from '../../themes'
 import Button from '../Button'
 
 function AppHeader({ style, title, leftText, leftButton, rightText, rightButton , onLeftPress, onRightPress, bgColor, titleAlign, width, height, disabled }) {
 
-	const LeftView = useCallback(() => {
+	function LeftView() {
   return <View style={styles.view}>
 			{leftText && <TouchableOpacity onPress={onLeftPress}>
 				<Text style={{ color: bgColor, textAlign: titleAlign }}>{leftText}</Text>
 			</TouchableOpacity>}
 			{leftButton && <Button title={leftButton} bgColor={bgColor} onPress={onLeftPress} width={width} height={height} disabled={disabled} />}
 		</View>
-  },[])
+  }
 
-	const TitleView = () => {
+	function TitleView() {
   return <View style={styles.titleView}>
 			<Title style={{ color: bgColor, textAlign: titleAlign }}>{title}</Title>
 		</View>

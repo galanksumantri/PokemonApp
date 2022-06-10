@@ -8,6 +8,7 @@ export default function Detail() {
   const [uriImage, seturiImage] = useState();
   const [profile, setprofile] = useState([]);
   const [types, settypes] = useState([]);
+
   useEffect(async () => {
     await axios.get('https://pokeapi.co/api/v2/pokemon/1/').then(res => {
       seturiImage(res.data.sprites.other.home.front_default);

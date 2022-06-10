@@ -1,10 +1,10 @@
 import React from 'react';
-import { TextInput, View, Text, Dimensions, StyleSheet } from 'react-native';
+import { TextInput, View, Text, Dimensions, StyleSheet, Alert } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import analytics from '@react-native-firebase/analytics';
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 import { GoogleSignin, GoogleSigninButton  } from '@react-native-google-signin/google-signin';
 import { COLORS } from '../../themes';
 import Button from '../../component/Button';
@@ -21,7 +21,31 @@ const validationSchema = Yup.object({
 })
 
 export default function Login() {
-  
+  const onLoginRDB = values => {
+    try {
+      database()
+        .ref('users/')
+        .orderByChild('email')
+        .equalTo(values.email)
+        .once('value')
+        .then(async snapshot => {
+          if (snapshot.val() == null) {
+            Alert.alert('Invalid Email Id');
+            return false;
+          }
+          const userData = Object.values(snapshot.val())[0];
+          if (userData?.password !== values.password) {
+            Alert.alert('Error', 'Invalid Password!');
+            return false;
+          }
+          navigation.navigate('Dashboard');
+          return false
+        });
+    } catch (error) {
+      Alert.alert('Error', 'Not Found User');
+    }
+  };
+
   GoogleSignin.configure({
     webClientId:
     '382122280197-r6vdscaicacm7jkoiekchqgcv8a5cg0s.apps.googleusercontent.com',
@@ -54,12 +78,9 @@ export default function Login() {
         <Formik
           initialValues={userInfo}
           validationSchema={validationSchema}
-          onSubmit={ async () =>
-              await analytics().logEvent('login',{
-                id: 1,
-                item: 'login',
-              }, navigation.navigate("Dashboard")
-            )}
+          onSubmit={ async values => {
+            onLoginRDB(values);
+          }}
         >
           {({ handleChange, handleBlur, handleSubmit, values }) => (
             <View>
