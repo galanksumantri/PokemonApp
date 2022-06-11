@@ -3,9 +3,9 @@ import { TextInput, View, Text, Dimensions, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import auth from '@react-native-firebase/auth'
 import { COLORS } from '../../themes';
 import Button from '../../component/Button'
-import auth from '@react-native-firebase/auth'
 import { reference } from '../../database/firebase'
 import * as navigation from '../../router/RootNavigation';
 
@@ -30,7 +30,7 @@ const validationSchema = Yup.object({
         'Password does not match!')
 })
 
-const handleSubmit = ({ email, password, fullName, bio }) => {
+const Submit = ({ email, password, fullName, bio }) => {
   auth().createUserWithEmailAndPassword(email, password).then((response) => {
     const data = {
       fullName, email, bio, uid: response.user.uid
@@ -57,7 +57,7 @@ export default function Register() {
     bio: '',
     email: '',
     password: '',
-    // confirmPassword: '',
+    confirmPassword: '',
   } 
   return (
     <SafeAreaView
@@ -67,9 +67,9 @@ export default function Register() {
         <Formik
           initialValues={userInfo}
           validationSchema={validationSchema}
-          onSubmit={(values) => handleSubmit(values)}         
+          onSubmit={(values) => Submit(values)}         
         >
-          {({ values, handleChange, handleBlur, handleSubmit, }) => {   
+          {({ values, handleChange, handleBlur, handleSubmit, errors, touched }) => {   
             const { name, bio, email, password, confirmPassword } = values;
             return(
                 <View>
@@ -78,26 +78,34 @@ export default function Register() {
                     onChangeText={handleChange('name')}
                     value={name}
                     placeholder="Enter username"
+                    onBlur={handleBlur('name')}
                 />
+                {errors.name && touched.name && <Text style={styles.eror}>{touched.name && errors.name}</Text>}
                 <TextInput
                     style={styles.inputForm}
                     onChangeText={handleChange('bio')}
                     value={bio}
                     placeholder="Enter bio"
+                    onBlur={handleBlur('bio')}
                 />
+                {errors.bio && touched.bio && <Text style={styles.eror}>{touched.bio && errors.bio}</Text>}                
                 <TextInput
                     style={styles.inputForm}
                     onChangeText={handleChange('email')}
                     value={email}
                     placeholder="Enter email id"
+                    onBlur={handleBlur('email')}
                 />
+                {errors.email && touched.email && <Text style={styles.eror}>{touched.email && errors.email}</Text>}                
                 <TextInput
                     style={styles.inputForm}
                     onChangeText={handleChange('password')}
                     value={password}
                     placeholder="Enter password"
+                    onBlur={handleBlur('password')}
                     secureTextEntry
                 />
+                {errors.password && touched.password && <Text style={styles.eror}>{touched.password && errors.password}</Text>}
                 <TextInput
                     style={styles.inputForm}
                     onChangeText={handleChange('confirmPassword')}
@@ -105,7 +113,8 @@ export default function Register() {
                     value={confirmPassword}
                     placeholder="Enter password again"
                     secureTextEntry
-                />              
+                />    
+                {errors.confirmPassword && touched.confirmPassword && <Text style={styles.eror}>{touched.confirmPassword && errors.confirmPassword}</Text>}          
                 <Button
                     title="REGISTER"
                     // disabled={!isValid}
@@ -174,5 +183,11 @@ const styles = StyleSheet.create({
     borderColor: "green",
     borderRadius: 10,
     height: windowHeight * 0.05 ,
+  },
+  eror: {
+    fontSize: 15, 
+    color: 'red', 
+    marginHorizontal: 10, 
+    alignSelf: 'flex-start', 
   },
 });

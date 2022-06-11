@@ -1,12 +1,12 @@
 import React from 'react';
-import { TextInput, View, Text, Dimensions, StyleSheet, Alert } from 'react-native';
+import { TextInput, View, Text, Dimensions, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin, GoogleSigninButton  } from '@react-native-google-signin/google-signin';
 import { COLORS } from '../../themes';
-import Button from '../../component/Button';
+import { Button } from '../../component';
 import * as navigation from '../../router/RootNavigation';
 
 const validationSchema = Yup.object({
@@ -24,17 +24,17 @@ const userInfo = {
   password: '',
 }
 
-const handleSubmit = ({email, password}) => {
-  auth().signInWithEmailAndPassword(email, password).then((response) => {
+const Submit = ({email, password}) => {
+  auth().signInWithEmailAndPassword(email, password).then(() => {
     navigation.navigate('Dashboard')
   })
   .catch(error => {
-    if (error.code === 'auth/email-already-in-use') {
-      console.log('That email address is already in use!');
+    if (error.code === 'auth/user-not-found') {
+      console.log('user not found!');
     }
 
-    if (error.code === 'auth/invalid-email') {
-      console.log('That email address is invalid!');
+    if (error.code === 'auth/wrong-password') {
+      console.log('wrong password!');
     }
     console.error(error);
   });
@@ -63,9 +63,9 @@ export default function Login() {
         <Formik
           initialValues={userInfo}
           validationSchema={validationSchema}
-          onSubmit={ (values) => handleSubmit(values)}
+          onSubmit={ (values) => Submit(values)}
         >
-          {({ handleChange, handleBlur, handleSubmit, values }) => (
+          {({ handleChange, handleBlur, handleSubmit, errors, values, touched }) => (
             <View>
               <TextInput
                 style={styles.inputForm}
@@ -73,7 +73,8 @@ export default function Login() {
                 onBlur={handleBlur('email')}
                 value={values.email}
                 placeholder="Enter email id"
-              />
+              /> 
+              {errors.email && touched.email && <Text style={styles.eror}>{touched.email && errors.email}</Text>}
               <TextInput
                 style={styles.inputForm}
                 onChangeText={handleChange('password')}
@@ -82,6 +83,7 @@ export default function Login() {
                 placeholder="Enter password"
                 secureTextEntry
               />
+              {errors.email && touched.password && <Text style={styles.eror}>{touched.password && errors.password}</Text>}
               <Button
                 title="LOGIN"
                 bgColor="green"
@@ -151,5 +153,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 10,
     height: windowHeight * 0.05 ,
+  },
+  eror: {
+    fontSize: 15, 
+    color: 'red', 
+    marginHorizontal: 10, 
+    alignSelf: 'flex-start', 
   },
 })
