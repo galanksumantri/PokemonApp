@@ -1,13 +1,16 @@
 import React from 'react';
-import { TextInput, View, Text, Dimensions , StyleSheet } from 'react-native';
+import { TextInput, View, Text, Dimensions, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '../../themes';
 import Button from '../../component/Button'
+import auth from '@react-native-firebase/auth'
+import { reference } from '../../database/firebase'
+import * as navigation from '../../router/RootNavigation';
 
 const validationSchema = Yup.object({
-    username: Yup.string()
+    name: Yup.string()
         .trim()
         .min(3, 'Invalid username!')
         .required('Username is required!'),
@@ -27,13 +30,34 @@ const validationSchema = Yup.object({
         'Password does not match!')
 })
 
-export default function Register({navigation}) {
+const handleSubmit = ({ email, password, fullName, bio }) => {
+  auth().createUserWithEmailAndPassword(email, password).then((response) => {
+    const data = {
+      fullName, email, bio, uid: response.user.uid
+    }
+    reference().ref(`users/${response.user.uid}/`).set(data);
+    navigation.navigate('Login')
+  })
+  .catch(error => {
+    if (error.code === 'auth/email-already-in-use') {
+      console.log('That email address is already in use!');
+    }
+
+    if (error.code === 'auth/invalid-email') {
+      console.log('That email address is invalid!');
+    }
+    console.error(error);
+  });
+}
+
+export default function Register() {
+  
   const userInfo = {
-    username: '',
+    name: '',
     bio: '',
     email: '',
     password: '',
-    confirmPassword: '',
+    // confirmPassword: '',
   } 
   return (
     <SafeAreaView
@@ -43,40 +67,33 @@ export default function Register({navigation}) {
         <Formik
           initialValues={userInfo}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
-              console.log(values)
-              navigation.navigate("Login")
-          }}
+          onSubmit={(values) => handleSubmit(values)}         
         >
           {({ values, handleChange, handleBlur, handleSubmit, }) => {   
-            const { username, bio, email, password, confirmPassword } = values;
+            const { name, bio, email, password, confirmPassword } = values;
             return(
                 <View>
                 <TextInput
                     style={styles.inputForm}
-                    onChangeText={handleChange('username')}
-                    onBlur={handleBlur('username')}
-                    value={username}
+                    onChangeText={handleChange('name')}
+                    value={name}
                     placeholder="Enter username"
                 />
                 <TextInput
                     style={styles.inputForm}
                     onChangeText={handleChange('bio')}
-                    onBlur={handleBlur('bio')}
                     value={bio}
                     placeholder="Enter bio"
                 />
                 <TextInput
                     style={styles.inputForm}
                     onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
                     value={email}
                     placeholder="Enter email id"
                 />
                 <TextInput
                     style={styles.inputForm}
                     onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
                     value={password}
                     placeholder="Enter password"
                     secureTextEntry
@@ -103,6 +120,15 @@ export default function Register({navigation}) {
           )}}
         </Formik>
       </View>
+      <View style={styles.login}>
+      <Text>Already have an account?</Text>
+      <Button 
+        title="Login here!"
+        width="0.20"
+        height="0.025"
+        onPress={() => navigation.navigate("Login")}
+      />
+      </View>
     </SafeAreaView>
   );
 }
@@ -110,6 +136,11 @@ export default function Register({navigation}) {
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+  login: {
+    marginTop: 10,
+    flexDirection: "row",
+    justifyContent: "center"
+  },
   container: {
     justifyContent: "center",
     alignItems: "center",
@@ -144,4 +175,4 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: windowHeight * 0.05 ,
   },
-})
+});

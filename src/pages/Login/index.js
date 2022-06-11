@@ -4,7 +4,6 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import auth from '@react-native-firebase/auth';
-import database from '@react-native-firebase/database';
 import { GoogleSignin, GoogleSigninButton  } from '@react-native-google-signin/google-signin';
 import { COLORS } from '../../themes';
 import Button from '../../component/Button';
@@ -20,32 +19,28 @@ const validationSchema = Yup.object({
       .required('Password is required!'),
 })
 
-export default function Login() {
-  const onLoginRDB = values => {
-    try {
-      database()
-        .ref('users/')
-        .orderByChild('email')
-        .equalTo(values.email)
-        .once('value')
-        .then(async snapshot => {
-          if (snapshot.val() == null) {
-            Alert.alert('Invalid Email Id');
-            return false;
-          }
-          const userData = Object.values(snapshot.val())[0];
-          if (userData?.password !== values.password) {
-            Alert.alert('Error', 'Invalid Password!');
-            return false;
-          }
-          navigation.navigate('Dashboard');
-          return false
-        });
-    } catch (error) {
-      Alert.alert('Error', 'Not Found User');
-    }
-  };
+const userInfo = {
+  email: '',
+  password: '',
+}
 
+const handleSubmit = ({email, password}) => {
+  auth().signInWithEmailAndPassword(email, password).then((response) => {
+    navigation.navigate('Dashboard')
+  })
+  .catch(error => {
+    if (error.code === 'auth/email-already-in-use') {
+      console.log('That email address is already in use!');
+    }
+
+    if (error.code === 'auth/invalid-email') {
+      console.log('That email address is invalid!');
+    }
+    console.error(error);
+  });
+}
+
+export default function Login() {
   GoogleSignin.configure({
     webClientId:
     '382122280197-r6vdscaicacm7jkoiekchqgcv8a5cg0s.apps.googleusercontent.com',
@@ -53,23 +48,13 @@ export default function Login() {
 
   async function GoogleLogin() {
     try {
-      // Get the users ID token
       const { idToken } = await GoogleSignin.signIn();
-
-      // Create a Google credential with the token
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-      // Sign-in the user with the credential
       await auth().signInWithCredential(googleCredential);
     } catch(error) {
       console.error({error});
     }}
-    // googleLogin = useContext(AuthContext)
 
-  const userInfo = {
-    email: '',
-    password: '',
-  }
   return (
     <SafeAreaView
       style={styles.content}>
@@ -78,9 +63,7 @@ export default function Login() {
         <Formik
           initialValues={userInfo}
           validationSchema={validationSchema}
-          onSubmit={ async values => {
-            onLoginRDB(values);
-          }}
+          onSubmit={ (values) => handleSubmit(values)}
         >
           {({ handleChange, handleBlur, handleSubmit, values }) => (
             <View>
@@ -115,7 +98,7 @@ export default function Login() {
       <View style={styles.register}>
         <Text>Not have account?</Text>
         <Button 
-          title="Register here"
+          title="Register here!"
           width="0.25"
           height="0.025"
           onPress={() => navigation.navigate("Register")}
