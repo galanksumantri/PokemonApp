@@ -1,3 +1,4 @@
-import pokeBall from './pokeball.png';
+import pokeBall from './pokeballColor.png';
+import pokeBallBg from './pokeballBg.png';
 
-export { pokeBall };
+export { pokeBall, pokeBallBg };

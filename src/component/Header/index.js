@@ -13,13 +13,13 @@ function AppHeader({ style, title, leftText, leftButton, rightText, rightButton 
 			</TouchableOpacity>}
 			{leftButton && <Button title={leftButton} bgColor={bgColor} onPress={onLeftPress} width={width} height={height} disabled={disabled} />}
 		</View>
-}
+  }
 
 	function TitleView() {
   return <View style={styles.titleView}>
 			<Title style={{ color: bgColor, textAlign: titleAlign }}>{title}</Title>
 		</View>
-}
+  }
 
 	function RightView() {
   return <View style={[styles.view, styles.rightView]}>
@@ -28,7 +28,7 @@ function AppHeader({ style, title, leftText, leftButton, rightText, rightButton 
 			</TouchableOpacity>}
 			{rightButton && <Button title={rightButton} bgColor={bgColor} onPress={onRightPress} width={width} height={height} disabled={disabled} />}
 		</View>
-}
+  }
 
 	return (
 		<Surface style={[styles.header, style, { backgroundColor: "orange" }]}>
@@ -39,7 +39,7 @@ function AppHeader({ style, title, leftText, leftButton, rightText, rightButton 
 	)
 }
 
-export default AppHeader
+export default React.memo(AppHeader)
 
 const styles = StyleSheet.create({
     header: {

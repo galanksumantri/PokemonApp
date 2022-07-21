@@ -4,7 +4,7 @@ import { Surface, Title } from 'react-native-paper'
 import {COLORS} from '../../themes'
 import Button from '../Button';
 
-function Slider({bgLeftColor, bgRightColor, onLeftPress, onRightPress}) {
+function Slider({bgLeftColor, bgRightColor, onLeftPress, onRightPress, number}) {
 
 	function Previous() {
   return <View style={styles.view}>
@@ -19,7 +19,7 @@ function Slider({bgLeftColor, bgRightColor, onLeftPress, onRightPress}) {
 }
 	function PageNumber() {
   return <View style={styles.titleView}>
-		<Title style={{ textAlign: "center" }}>1</Title>
+		<Title style={{ textAlign: "center" }}>{number}</Title>
 	  </View>
 }
 	function Next() {

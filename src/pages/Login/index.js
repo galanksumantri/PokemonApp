@@ -3,11 +3,10 @@ import { TextInput, View, Text, Dimensions, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import analytics from '@react-native-firebase/analytics';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin, GoogleSigninButton  } from '@react-native-google-signin/google-signin';
 import { COLORS } from '../../themes';
-import Button from '../../component/Button';
+import { Button } from '../../component';
 import * as navigation from '../../router/RootNavigation';
 
 const validationSchema = Yup.object({
@@ -20,8 +19,28 @@ const validationSchema = Yup.object({
       .required('Password is required!'),
 })
 
+const userInfo = {
+  email: '',
+  password: '',
+}
+
+const Submit = ({email, password}) => {
+  auth().signInWithEmailAndPassword(email, password).then(() => {
+    navigation.navigate('Dashboard')
+  })
+  .catch(error => {
+    if (error.code === 'auth/user-not-found') {
+      console.log('user not found!');
+    }
+
+    if (error.code === 'auth/wrong-password') {
+      console.log('wrong password!');
+    }
+    console.error(error);
+  });
+}
+
 export default function Login() {
-  
   GoogleSignin.configure({
     webClientId:
     '382122280197-r6vdscaicacm7jkoiekchqgcv8a5cg0s.apps.googleusercontent.com',
@@ -29,23 +48,13 @@ export default function Login() {
 
   async function GoogleLogin() {
     try {
-      // Get the users ID token
       const { idToken } = await GoogleSignin.signIn();
-
-      // Create a Google credential with the token
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-      // Sign-in the user with the credential
       await auth().signInWithCredential(googleCredential);
     } catch(error) {
       console.error({error});
     }}
-    // googleLogin = useContext(AuthContext)
 
-  const userInfo = {
-    email: '',
-    password: '',
-  }
   return (
     <SafeAreaView
       style={styles.content}>
@@ -54,14 +63,9 @@ export default function Login() {
         <Formik
           initialValues={userInfo}
           validationSchema={validationSchema}
-          onSubmit={ async () =>
-              await analytics().logEvent('login',{
-                id: 1,
-                item: 'login',
-              }, navigation.navigate("Dashboard")
-            )}
+          onSubmit={ (values) => Submit(values)}
         >
-          {({ handleChange, handleBlur, handleSubmit, values }) => (
+          {({ handleChange, handleBlur, handleSubmit, errors, values, touched }) => (
             <View>
               <TextInput
                 style={styles.inputForm}
@@ -69,7 +73,8 @@ export default function Login() {
                 onBlur={handleBlur('email')}
                 value={values.email}
                 placeholder="Enter email id"
-              />
+              /> 
+              {errors.email && touched.email && <Text style={styles.eror}>{touched.email && errors.email}</Text>}
               <TextInput
                 style={styles.inputForm}
                 onChangeText={handleChange('password')}
@@ -78,6 +83,7 @@ export default function Login() {
                 placeholder="Enter password"
                 secureTextEntry
               />
+              {errors.email && touched.password && <Text style={styles.eror}>{touched.password && errors.password}</Text>}
               <Button
                 title="LOGIN"
                 bgColor="green"
@@ -94,7 +100,7 @@ export default function Login() {
       <View style={styles.register}>
         <Text>Not have account?</Text>
         <Button 
-          title="Register here"
+          title="Register here!"
           width="0.25"
           height="0.025"
           onPress={() => navigation.navigate("Register")}
@@ -147,5 +153,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 10,
     height: windowHeight * 0.05 ,
+  },
+  eror: {
+    fontSize: 15, 
+    color: 'red', 
+    marginHorizontal: 10, 
+    alignSelf: 'flex-start', 
   },
 })
